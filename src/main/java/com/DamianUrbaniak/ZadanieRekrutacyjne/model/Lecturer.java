@@ -3,6 +3,7 @@ package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Lecturer {
     private Integer age;
 
     private LocalDate dateOfBirth;
+
 
     private String email;
 
