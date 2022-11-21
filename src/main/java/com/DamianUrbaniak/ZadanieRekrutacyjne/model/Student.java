@@ -55,4 +55,8 @@ public class Student {
     public Integer getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
+
+    public void assignLecturer(Lecturer lecturer) {
+        this.lecturers.add(lecturer);
+    }
 }

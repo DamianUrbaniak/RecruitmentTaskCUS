@@ -35,9 +35,9 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getStudentLecturers(studentId));
     }
 
-    @GetMapping("/getAllStudents")
-    public ResponseEntity<List<Student>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
+    @GetMapping("/getAllStudents/{keyword}")
+    public ResponseEntity<List<Student>> getAllStudents(@PathVariable String keyword) {
+        return ResponseEntity.ok(studentService.getAllStudents(keyword));
     }
 
     @GetMapping("/{studentId}")
