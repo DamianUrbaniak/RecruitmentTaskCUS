@@ -1,6 +1,9 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor(staticName = "build")
+@NoArgsConstructor
 public class Lecturer {
 
     @Id
@@ -31,7 +36,7 @@ public class Lecturer {
 
     private String subject;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "lecturers")
     private final List<Student> students = new ArrayList<>();
 
     public Lecturer(String name,

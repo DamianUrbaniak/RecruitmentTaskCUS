@@ -1,6 +1,8 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor(staticName = "build")
+@NoArgsConstructor
 public class Student {
 
     @Id
@@ -29,7 +33,11 @@ public class Student {
 
     private String field;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "Student_Lecturer",
+            joinColumns = { @JoinColumn(name = "student") },
+            inverseJoinColumns = { @JoinColumn(name = "lecturer_id") })
     private final List<Lecturer> lecturers = new ArrayList<>();
 
     public Student(String name,
