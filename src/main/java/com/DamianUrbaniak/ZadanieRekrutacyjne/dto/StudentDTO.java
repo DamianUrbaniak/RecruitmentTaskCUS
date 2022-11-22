@@ -1,16 +1,13 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.dto;
 
+import com.DamianUrbaniak.ZadanieRekrutacyjne.validation.IsAdult;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Transient;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.time.Period;
 
 @Data
 @NoArgsConstructor
@@ -18,18 +15,21 @@ import java.time.Period;
 public class StudentDTO {
 
 
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z]{3,20}$", message = "Name must be at least 3 characters long.")
     private String name;
 
+    @NotBlank
     private String lastName;
 
-    @Transient
     private Integer age;
 
+    @IsAdult
     private LocalDate dateOfBirth;
 
     @Email(message = "Invalid format of email!")
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String field;
 }

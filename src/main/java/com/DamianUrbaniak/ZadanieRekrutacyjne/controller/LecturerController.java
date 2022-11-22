@@ -28,9 +28,9 @@ public class LecturerController {
         lecturerService.assignStudentToLecturer(lecturerId, studentId);
     }
 
-    @GetMapping("/getAllLecturers")
-    public ResponseEntity<List<Lecturer>> getAllLecturers() {
-        return ResponseEntity.ok(lecturerService.getAllLecturers());
+    @GetMapping("/getAllLecturers/{keyword}")
+    public ResponseEntity<List<Lecturer>> getAllLecturers(@PathVariable String keyword) {
+        return ResponseEntity.ok(lecturerService.getAllLecturers(keyword));
     }
 
     @GetMapping("/{lecturerId}")

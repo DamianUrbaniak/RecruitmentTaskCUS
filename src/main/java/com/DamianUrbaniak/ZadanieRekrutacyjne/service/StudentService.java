@@ -28,8 +28,12 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public List<Student> getAllStudents() {
+    public List<Student> getAllStudents(String keyword) {
+        if (keyword != null) {
+            return studentRepository.findAll(keyword);
+        }
         return studentRepository.findAll();
+
     }
 
     public Student getStudent(Long studentId) {
@@ -55,7 +59,7 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
-        student.getLecturers().add(lecturer);
+        student.assignLecturer(lecturer);
         studentRepository.save(student);
     }
 

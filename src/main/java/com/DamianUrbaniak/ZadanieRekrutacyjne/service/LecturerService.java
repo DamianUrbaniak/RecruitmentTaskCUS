@@ -30,7 +30,10 @@ public class LecturerService {
         return lecturerRepository.save(lecturer);
     }
 
-    public List<Lecturer> getAllLecturers() {
+    public List<Lecturer> getAllLecturers(String keyword) {
+        if (keyword != null) {
+            lecturerRepository.findAll(keyword);
+        }
         return lecturerRepository.findAll();
     }
 
@@ -61,11 +64,6 @@ public class LecturerService {
         lecturer.getStudents().add(student);
         lecturerRepository.save(lecturer);
     }
-
-//    public Lecturer getLecturerByName(String name) {
-//        return lecturerRepository.findLecturerByName(name);
-//    }
-
     public void deleteLecturer(Long lecturerId) {
         boolean exists = lecturerRepository.existsById(lecturerId);
         if (!exists) {
