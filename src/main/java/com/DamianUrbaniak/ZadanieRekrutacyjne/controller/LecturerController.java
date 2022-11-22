@@ -1,9 +1,12 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.controller;
 
+import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.APIResponse;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
+import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.service.LecturerService;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.LecturerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +29,12 @@ public class LecturerController {
     @PostMapping("/{lecturerId}/assignStudent/{studentId}")
     public void assignStudentToLecturer(@PathVariable("lecturerId") Long studentId, @PathVariable("studentId") Long lecturerId) {
         lecturerService.assignStudentToLecturer(lecturerId, studentId);
+    }
+
+    @GetMapping("/pagination/{offset}/{pageSize}/{field}")
+    public APIResponse<Page<Lecturer>> getLecturersWithSortingAndPagination(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+        Page<Lecturer> lecturersWithSortingAndPagination = lecturerService.findLecturersWithSortingAndPagination(offset,pageSize,field);
+        return new APIResponse<>(lecturersWithSortingAndPagination.getSize(), lecturersWithSortingAndPagination);
     }
 
     @GetMapping("/getAllLecturers/{keyword}")

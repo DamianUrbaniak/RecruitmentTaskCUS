@@ -1,11 +1,13 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.controller;
 
 
+import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.APIResponse;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.service.StudentService;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,13 @@ public class StudentController {
     public void assignLecturerToStudent(@PathVariable("studentId") Long studentId, @PathVariable("lecturerId") Long lecturerId) {
         studentService.assignLecturerToStudent(studentId, lecturerId);
     }
+
+    @GetMapping("/pagination/{offset}/{pageSize}/{field}")
+    public APIResponse<Page<Student>> getStudentsWithSortingAndPagination(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String field) {
+        Page<Student> studentsWithSortingAndPagination = studentService.findStudentsWithSortingAndPagination(offset,pageSize,field);
+        return new APIResponse<>(studentsWithSortingAndPagination.getSize(), studentsWithSortingAndPagination);
+    }
+
 
     @GetMapping("/studentLecturers/{studentId}")
     public ResponseEntity<List<Lecturer>> getStudentLecturers(@PathVariable("studentId") Long studentId) {

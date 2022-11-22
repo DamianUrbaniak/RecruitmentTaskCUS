@@ -7,6 +7,9 @@ import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.LecturerRepository;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.StudentRepository;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.LecturerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +39,14 @@ public class LecturerService {
         }
         return lecturerRepository.findAll();
     }
+    public Page<Lecturer> findLecturersWithSortingAndPagination(int offset, int pageSize, String field) {
+        Page<Lecturer> lecturers = lecturerRepository
+                .findAll(PageRequest.of(offset, pageSize)
+                        .withSort(Sort.by(field)));
+        return lecturers;
+    }
+
+
 
     public Lecturer getLecturer(Long lecturerId) {
         return lecturerRepository.findLecturerById(lecturerId);
