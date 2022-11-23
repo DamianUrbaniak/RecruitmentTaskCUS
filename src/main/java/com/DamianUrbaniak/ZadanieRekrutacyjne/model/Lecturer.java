@@ -7,12 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -40,7 +39,7 @@ public class Lecturer {
     private String subject;
 
     @ManyToMany(mappedBy = "lecturers")
-    private final Set<Student> students = new HashSet<>();
+    private final List<Student> students = new ArrayList<>();
 
     public Lecturer(String name,
                     String lastName,

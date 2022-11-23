@@ -1,20 +1,18 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.service;
 
+import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.LecturerRepository;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.StudentRepository;
-import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -33,15 +31,15 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Set<Student> filterStudents(String keyword) {
+    public List<Student> filterStudents(String keyword) {
         if (keyword == null) {
             throw new IllegalArgumentException("Keyword is not provided.");
         }
         return studentRepository.findAll(keyword);
     }
 
-    public Set<Student> getAllStudents() {
-        return new HashSet<Student>(studentRepository.findAll());
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
     public Page<Student> findStudentsWithSortingAndPagination(int offset, int pageSize, String field) {
@@ -55,7 +53,7 @@ public class StudentService {
         return studentRepository.findStudentById(studentId);
     }
 
-    public Set<Lecturer> getStudentLecturers(Long studentId) {
+    public List<Lecturer> getStudentLecturers(Long studentId) {
         return getStudent(studentId).getLecturers();
     }
 
@@ -74,13 +72,12 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
-        Set<Lecturer> alreadyAssigned = student.getLecturers();
+        List<Lecturer> alreadyAssigned = student.getLecturers();
 
-        Set<Long> idSet = alreadyAssigned.stream()
-                .map(Lecturer::getId)
-                .collect(Collectors.toSet());
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Lecturer::getId).toList();
 
-        if (idSet.contains(lecturerId)) {
+        if (idList.contains(lecturerId)) {
             throw new IllegalArgumentException("Lecturer is already assigned.");
         }
 
@@ -103,13 +100,12 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
-        Set<Lecturer> alreadyAssigned = student.getLecturers();
+        List<Lecturer> alreadyAssigned = student.getLecturers();
 
-        Set<Long> idSet = alreadyAssigned.stream()
-                .map(Lecturer::getId)
-                .collect(Collectors.toSet());
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Lecturer::getId).toList();
 
-        if (!idSet.contains(lecturerId)) {
+        if (!idList.contains(lecturerId)) {
             throw new IllegalArgumentException("Lecturer with id " + lecturerId + " is not assigned to student with id " + studentId);
         }
 

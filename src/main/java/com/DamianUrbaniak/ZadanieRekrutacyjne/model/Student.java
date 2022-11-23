@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -38,12 +38,12 @@ public class Student {
 
     private String field;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.DETACH})
     @JoinTable(
             name = "Student_Lecturer",
-            joinColumns = {@JoinColumn(name = "student")},
+            joinColumns = {@JoinColumn(name = "student_id")},
             inverseJoinColumns = {@JoinColumn(name = "lecturer_id")})
-    private final Set<Lecturer> lecturers = new HashSet<>();
+    private final List<Lecturer> lecturers = new ArrayList<>();
 
     public Student(String name,
                    String lastName,

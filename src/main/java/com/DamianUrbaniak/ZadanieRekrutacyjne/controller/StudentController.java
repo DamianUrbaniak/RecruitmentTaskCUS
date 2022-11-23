@@ -1,10 +1,10 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.controller;
 
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.APIResponse;
+import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.service.StudentService;
-import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -38,17 +38,17 @@ public class StudentController {
     }
 
     @GetMapping("/studentLecturers/{studentId}")
-    public ResponseEntity<Set<Lecturer>> getStudentLecturers(@PathVariable("studentId") Long studentId) {
+    public ResponseEntity<List<Lecturer>> getStudentLecturers(@PathVariable("studentId") Long studentId) {
         return ResponseEntity.ok(studentService.getStudentLecturers(studentId));
     }
 
     @GetMapping("/filterStudents/{keyword}")
-    public ResponseEntity<Set<Student>> filterStudents(@PathVariable String keyword) {
+    public ResponseEntity<List<Student>> filterStudents(@PathVariable String keyword) {
         return ResponseEntity.ok(studentService.filterStudents(keyword));
     }
 
     @GetMapping("/getAllStudents")
-    public ResponseEntity<Set<Student>> getAllStudents() {
+    public ResponseEntity<List<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
