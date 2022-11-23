@@ -2,7 +2,6 @@ package com.DamianUrbaniak.ZadanieRekrutacyjne.controller;
 
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.APIResponse;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
-import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.service.LecturerService;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.LecturerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/lecturer")
@@ -33,18 +32,28 @@ public class LecturerController {
 
     @GetMapping("/pagination/{offset}/{pageSize}/{field}")
     public APIResponse<Page<Lecturer>> getLecturersWithSortingAndPagination(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
-        Page<Lecturer> lecturersWithSortingAndPagination = lecturerService.findLecturersWithSortingAndPagination(offset,pageSize,field);
+        Page<Lecturer> lecturersWithSortingAndPagination = lecturerService.findLecturersWithSortingAndPagination(offset, pageSize, field);
         return new APIResponse<>(lecturersWithSortingAndPagination.getSize(), lecturersWithSortingAndPagination);
     }
 
-    @GetMapping("/getAllLecturers/{keyword}")
-    public ResponseEntity<List<Lecturer>> getAllLecturers(@PathVariable String keyword) {
-        return ResponseEntity.ok(lecturerService.getAllLecturers(keyword));
+    @GetMapping("/getAllLecturers")
+    public ResponseEntity<Set<Lecturer>> getAllLecturers() {
+        return ResponseEntity.ok(lecturerService.getAllLecturers());
+    }
+
+    @GetMapping("/filterLecturers/{keyword}")
+    public ResponseEntity<Set<Lecturer>> filterLecturers(@PathVariable String keyword) {
+        return ResponseEntity.ok(lecturerService.filterLecturers(keyword));
     }
 
     @GetMapping("/{lecturerId}")
     public ResponseEntity<Lecturer> getLecturer(@PathVariable Long lecturerId) {
         return ResponseEntity.ok(lecturerService.getLecturer(lecturerId));
+    }
+
+    @DeleteMapping(path = "/{lecturerId}/removeStudent/{studentId}")
+    public void removeLecturerFromStudent(@PathVariable("lecturerId") Long lecturerId, @PathVariable("studentId") Long studentId) {
+        lecturerService.removeStudentfromLecturer(lecturerId, studentId);
     }
 
     @DeleteMapping(path = "{lecturerId}")

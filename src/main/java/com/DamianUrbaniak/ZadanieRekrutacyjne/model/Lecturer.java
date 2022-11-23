@@ -1,17 +1,22 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Data
 @Entity
 @AllArgsConstructor(staticName = "build")
@@ -30,14 +35,12 @@ public class Lecturer {
     private Integer age;
 
     private LocalDate dateOfBirth;
-
-
     private String email;
 
     private String subject;
 
     @ManyToMany(mappedBy = "lecturers")
-    private final List<Student> students = new ArrayList<>();
+    private final Set<Student> students = new HashSet<>();
 
     public Lecturer(String name,
                     String lastName,
@@ -53,5 +56,13 @@ public class Lecturer {
 
     public Integer getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
+    }
+
+    public void assignStudent(Student student) {
+        this.students.add(student);
+    }
+
+    public void removeStudent(Student student) {
+        this.students.remove(student);
     }
 }

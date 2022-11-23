@@ -1,6 +1,5 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.controller;
 
-
 import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.APIResponse;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/student")
@@ -33,25 +32,34 @@ public class StudentController {
     }
 
     @GetMapping("/pagination/{offset}/{pageSize}/{field}")
-    public APIResponse<Page<Student>> getStudentsWithSortingAndPagination(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String field) {
-        Page<Student> studentsWithSortingAndPagination = studentService.findStudentsWithSortingAndPagination(offset,pageSize,field);
+    public APIResponse<Page<Student>> getStudentsWithSortingAndPagination(@PathVariable int offset, @PathVariable int pageSize, @PathVariable String field) {
+        Page<Student> studentsWithSortingAndPagination = studentService.findStudentsWithSortingAndPagination(offset, pageSize, field);
         return new APIResponse<>(studentsWithSortingAndPagination.getSize(), studentsWithSortingAndPagination);
     }
 
-
     @GetMapping("/studentLecturers/{studentId}")
-    public ResponseEntity<List<Lecturer>> getStudentLecturers(@PathVariable("studentId") Long studentId) {
+    public ResponseEntity<Set<Lecturer>> getStudentLecturers(@PathVariable("studentId") Long studentId) {
         return ResponseEntity.ok(studentService.getStudentLecturers(studentId));
     }
 
-    @GetMapping("/getAllStudents/{keyword}")
-    public ResponseEntity<List<Student>> getAllStudents(@PathVariable String keyword) {
-        return ResponseEntity.ok(studentService.getAllStudents(keyword));
+    @GetMapping("/filterStudents/{keyword}")
+    public ResponseEntity<Set<Student>> filterStudents(@PathVariable String keyword) {
+        return ResponseEntity.ok(studentService.filterStudents(keyword));
+    }
+
+    @GetMapping("/getAllStudents")
+    public ResponseEntity<Set<Student>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents());
     }
 
     @GetMapping("/{studentId}")
     public ResponseEntity<Student> getStudent(@PathVariable Long studentId) {
         return ResponseEntity.ok(studentService.getStudent(studentId));
+    }
+
+    @DeleteMapping(path = "/{studentId}/removeLecturer/{lecturerId}")
+    public void removeLecturerFromStudent(@PathVariable("studentId") Long studentId, @PathVariable("lecturerId") Long lecturerId) {
+        studentService.removeLecturerToStudent(studentId, lecturerId);
     }
 
     @DeleteMapping(path = "{studentId}")

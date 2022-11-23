@@ -1,5 +1,7 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,9 +9,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Data
 @Entity
 @AllArgsConstructor(staticName = "build")
@@ -33,12 +38,12 @@ public class Student {
 
     private String field;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "Student_Lecturer",
-            joinColumns = { @JoinColumn(name = "student") },
-            inverseJoinColumns = { @JoinColumn(name = "lecturer_id") })
-    private final List<Lecturer> lecturers = new ArrayList<>();
+            joinColumns = {@JoinColumn(name = "student")},
+            inverseJoinColumns = {@JoinColumn(name = "lecturer_id")})
+    private final Set<Lecturer> lecturers = new HashSet<>();
 
     public Student(String name,
                    String lastName,
@@ -59,4 +64,9 @@ public class Student {
     public void assignLecturer(Lecturer lecturer) {
         this.lecturers.add(lecturer);
     }
+
+    public void removeLecturer(Lecturer lecturer) {
+        this.lecturers.remove(lecturer);
+    }
+
 }

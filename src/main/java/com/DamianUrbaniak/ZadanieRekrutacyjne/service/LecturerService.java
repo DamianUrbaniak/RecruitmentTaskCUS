@@ -12,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class LecturerService {
@@ -33,26 +35,27 @@ public class LecturerService {
         return lecturerRepository.save(lecturer);
     }
 
-    public List<Lecturer> getAllLecturers(String keyword) {
-        if (keyword != null) {
-            lecturerRepository.findAll(keyword);
+    public Set<Lecturer> filterLecturers(String keyword) {
+        if (keyword == null) {
+            throw new IllegalArgumentException("Keyword is not provided.");
         }
-        return lecturerRepository.findAll();
+        return lecturerRepository.findAll(keyword);
     }
+
+    public Set<Lecturer> getAllLecturers() {
+        return new HashSet<Lecturer>(lecturerRepository.findAll());
+    }
+
     public Page<Lecturer> findLecturersWithSortingAndPagination(int offset, int pageSize, String field) {
-        Page<Lecturer> lecturers = lecturerRepository
-                .findAll(PageRequest.of(offset, pageSize)
-                        .withSort(Sort.by(field)));
-        return lecturers;
+        return lecturerRepository.findAll(PageRequest.of(offset, pageSize)
+                .withSort(Sort.by(field)));
     }
-
-
 
     public Lecturer getLecturer(Long lecturerId) {
         return lecturerRepository.findLecturerById(lecturerId);
     }
 
-    public List<Student> getLecturerStudents(Long lecturerId) {
+    public Set<Student> getLecturerStudents(Long lecturerId) {
         return getLecturer(lecturerId).getStudents();
     }
 
@@ -71,10 +74,39 @@ public class LecturerService {
         Lecturer lecturer = lecturerOpt.get();
         Student student = studentOpt.get();
 
-
-        lecturer.getStudents().add(student);
+        lecturer.assignStudent(student);
         lecturerRepository.save(lecturer);
     }
+
+    public void removeStudentfromLecturer(Long studentId, Long lecturerId) {
+
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (studentOpt.isEmpty()) {
+            return;
+        }
+
+        Optional<Lecturer> lecturerOpt = lecturerRepository.findById(lecturerId);
+        if (lecturerOpt.isEmpty()) {
+            return;
+        }
+
+        Student student = studentOpt.get();
+        Lecturer lecturer = lecturerOpt.get();
+
+        Set<Student> alreadyAssigned = lecturer.getStudents();
+
+        Set<Long> idSet = alreadyAssigned.stream()
+                .map(Student::getId)
+                .collect(Collectors.toSet());
+
+        if (!idSet.contains(studentId)) {
+            throw new IllegalArgumentException("Student with id " + studentId + " is not assigned to lecturer with id " + lecturerId);
+        }
+
+        lecturer.removeStudent(student);
+        lecturerRepository.save(lecturer);
+    }
+
     public void deleteLecturer(Long lecturerId) {
         boolean exists = lecturerRepository.existsById(lecturerId);
         if (!exists) {
