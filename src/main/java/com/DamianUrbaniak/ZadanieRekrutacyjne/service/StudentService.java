@@ -1,10 +1,10 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.service;
 
+import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Lecturer;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.model.Student;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.LecturerRepository;
 import com.DamianUrbaniak.ZadanieRekrutacyjne.repository.StudentRepository;
-import com.DamianUrbaniak.ZadanieRekrutacyjne.dto.StudentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,12 +31,15 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public List<Student> getAllStudents(String keyword) {
-        if (keyword != null) {
-            return studentRepository.findAll(keyword);
+    public List<Student> filterStudents(String keyword) {
+        if (keyword == null) {
+            throw new IllegalArgumentException("Keyword is not provided.");
         }
-        return studentRepository.findAll();
+        return studentRepository.findAll(keyword);
+    }
 
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
     }
 
     public Page<Student> findStudentsWithSortingAndPagination(int offset, int pageSize, String field) {
@@ -45,7 +48,6 @@ public class StudentService {
                         .withSort(Sort.by(field)));
         return students;
     }
-
 
     public Student getStudent(Long studentId) {
         return studentRepository.findStudentById(studentId);
@@ -70,7 +72,44 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
+        List<Lecturer> alreadyAssigned = student.getLecturers();
+
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Lecturer::getId).toList();
+
+        if (idList.contains(lecturerId)) {
+            throw new IllegalArgumentException("Lecturer is already assigned.");
+        }
+
         student.assignLecturer(lecturer);
+        studentRepository.save(student);
+    }
+
+    public void removeLecturerToStudent(Long studentId, Long lecturerId) {
+
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (studentOpt.isEmpty()) {
+            return;
+        }
+
+        Optional<Lecturer> lecturerOpt = lecturerRepository.findById(lecturerId);
+        if (lecturerOpt.isEmpty()) {
+            return;
+        }
+
+        Student student = studentOpt.get();
+        Lecturer lecturer = lecturerOpt.get();
+
+        List<Lecturer> alreadyAssigned = student.getLecturers();
+
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Lecturer::getId).toList();
+
+        if (!idList.contains(lecturerId)) {
+            throw new IllegalArgumentException("Lecturer with id " + lecturerId + " is not assigned to student with id " + studentId);
+        }
+
+        student.removeLecturer(lecturer);
         studentRepository.save(student);
     }
 

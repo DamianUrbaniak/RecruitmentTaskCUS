@@ -16,10 +16,11 @@ public class StudentDTO {
 
 
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$", message = "Name must be at least 3 characters long.")
+    @Pattern(regexp = "^[\\s\\p{L}]{3,25}$", message = "Name must be at least 3 characters long.")
     private String name;
 
     @NotBlank
+    @Pattern(regexp = "^[\\s\\p{L}]{3,25}$", message = "Last name must be at least 3 characters long.")
     private String lastName;
 
     private Integer age;
