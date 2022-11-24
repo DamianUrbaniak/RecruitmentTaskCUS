@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "52601210-d3a2-4d4b-8e38-e6107ec5632e",
+		"name": "RecruitmenTaskRequestsTesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21238876"
+	},
+	"item": [
+		{
+			"name": "getAllStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/getAllStudents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"getAllStudents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllLecturers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/getAllStudents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"getAllStudents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createStudent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Janina\",\r\n    \"lastName\": \"Nowak\",\r\n    \"dateOfBirth\": \"1970-06-03\",\r\n    \"email\": \"janinanowak@gmail.com\",\r\n    \"field\": \"geography\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9292/student/createStudent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"createStudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createLecturer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Paweł\",\r\n    \"lastName\":\"Bryk\",\r\n    \"dateOfBirth\":\"2004-01-19\",\r\n    \"email\":\"bryx@gmail.com\",\r\n    \"field\":\"english\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9292/lecturer/createLecturer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"lecturer",
+						"createLecturer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getStudent",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getLecturer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/lecturer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"lecturer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getStudentLecturers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/studentLecturers/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"studentLecturers",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getLecturerStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/lecturer/getLecturerStudents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"lecturer",
+						"getLecturerStudents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignLecturerToStudent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/4/assignLecturer/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"4",
+						"assignLecturer",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteStudent",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sortAndPaginateStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/pagination/0/5/name",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"pagination",
+						"0",
+						"5",
+						"name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sortAndPaginateLecturers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/lecturer/pagination/0/5/lastName",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"lecturer",
+						"pagination",
+						"0",
+						"5",
+						"lastName"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filterStudents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/filterStudents/Nowak",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"filterStudents",
+						"Nowak"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filterLecturers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/filterStudents/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"filterStudents",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeLecturerFromStudent",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/student/2/removeLecturer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"student",
+						"2",
+						"removeLecturer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteLecturer",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9292/lecturer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9292",
+					"path": [
+						"lecturer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
