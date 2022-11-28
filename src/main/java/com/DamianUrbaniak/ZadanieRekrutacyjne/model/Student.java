@@ -1,6 +1,7 @@
 package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @JsonIdentityInfo(
@@ -69,4 +71,17 @@ public class Student {
         this.lecturers.remove(lecturer);
     }
 
+    @JsonIgnore
+    public List<Lecturer> getLecturerList() {
+        return lecturers;
+    }
+
+    public String getLecturers() {
+        long lecturersId[] = new long[lecturers.size()];
+        for (int i = 0; i < lecturers.size() ; i++) {
+            lecturersId[i] = lecturers.get(i).getId();
+        }
+        return Arrays.toString(lecturersId);
+
+    }
 }

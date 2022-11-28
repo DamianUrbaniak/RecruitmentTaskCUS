@@ -54,7 +54,7 @@ public class StudentService {
     }
 
     public List<Lecturer> getStudentLecturers(Long studentId) {
-        return getStudent(studentId).getLecturers();
+        return getStudent(studentId).getLecturerList();
     }
 
     public void assignLecturerToStudent(Long studentId, Long lecturerId) {
@@ -72,7 +72,7 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
-        List<Lecturer> alreadyAssigned = student.getLecturers();
+        List<Lecturer> alreadyAssigned = student.getLecturerList();
 
         List<Long> idList = alreadyAssigned.stream()
                 .map(Lecturer::getId).toList();
@@ -100,7 +100,7 @@ public class StudentService {
         Student student = studentOpt.get();
         Lecturer lecturer = lecturerOpt.get();
 
-        List<Lecturer> alreadyAssigned = student.getLecturers();
+        List<Lecturer> alreadyAssigned = student.getLecturerList();
 
         List<Long> idList = alreadyAssigned.stream()
                 .map(Lecturer::getId).toList();

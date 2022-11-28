@@ -2,6 +2,7 @@ package com.DamianUrbaniak.ZadanieRekrutacyjne.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @JsonIdentityInfo(
@@ -38,7 +40,7 @@ public class Lecturer {
 
     private String subject;
 
-    @ManyToMany(mappedBy = "lecturers")
+    @ManyToMany(mappedBy = "lecturers", cascade = {CascadeType.DETACH})
     private final List<Student> students = new ArrayList<>();
 
     public Lecturer(String name,
@@ -63,5 +65,19 @@ public class Lecturer {
 
     public void removeStudent(Student student) {
         this.students.remove(student);
+    }
+
+    @JsonIgnore
+    public List<Student> getStudentList() {
+        return students;
+    }
+
+    public String getStudents() {
+        long studentsId[] = new long[students.size()];
+        for (int i = 0; i < students.size() ; i++) {
+            studentsId[i] = students.get(i).getId();
+        }
+        return Arrays.toString(studentsId);
+
     }
 }

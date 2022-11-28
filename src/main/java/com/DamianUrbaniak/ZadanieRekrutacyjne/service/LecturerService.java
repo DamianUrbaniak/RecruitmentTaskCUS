@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LecturerService {
@@ -53,8 +54,65 @@ public class LecturerService {
     }
 
     public List<Student> getLecturerStudents(Long lecturerId) {
-        return getLecturer(lecturerId).getStudents();
+        return getLecturer(lecturerId).getStudentList();
     }
+
+    public void assignStudentToLecturer(Long lecturerId, Long studentId) {
+
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (studentOpt.isEmpty()) {
+            return;
+        }
+
+        Optional<Lecturer> lecturerOpt = lecturerRepository.findById(lecturerId);
+        if (lecturerOpt.isEmpty()) {
+            return;
+        }
+
+        Student student = studentOpt.get();
+        Lecturer lecturer = lecturerOpt.get();
+
+        List<Student> alreadyAssigned = lecturer.getStudentList();
+
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Student::getId).toList();
+
+        if (idList.contains(studentId)) {
+            throw new IllegalArgumentException("Student is already assigned.");
+        }
+
+        lecturer.assignStudent(student);
+        lecturerRepository.save(lecturer);
+    }
+
+    public void removeStudentFromLecturer(Long lecturerId, Long studentId) {
+
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (studentOpt.isEmpty()) {
+            return;
+        }
+
+        Optional<Lecturer> lecturerOpt = lecturerRepository.findById(lecturerId);
+        if (lecturerOpt.isEmpty()) {
+            return;
+        }
+
+        Student student = studentOpt.get();
+        Lecturer lecturer = lecturerOpt.get();
+
+        List<Student> alreadyAssigned = lecturer.getStudentList();
+
+        List<Long> idList = alreadyAssigned.stream()
+                .map(Student::getId).toList();
+
+        if (!idList.contains(studentId)) {
+            throw new IllegalArgumentException("Student with id " + studentId + " is not assigned to lecturer with id " + lecturerId);
+        }
+
+        lecturer.removeStudent(student);
+        lecturerRepository.save(lecturer);
+    }
+
 
     public void deleteLecturer(Long lecturerId) {
         boolean exists = lecturerRepository.existsById(lecturerId);

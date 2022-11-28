@@ -53,6 +53,14 @@ public class LecturerController {
         return ResponseEntity.ok(lecturerService.getLecturer(lecturerId));
     }
 
+    @PostMapping("/{lecturerId}/assignStudent/{studentId}")
+    public void assignLecturerToStudent(@PathVariable("lecturerId") Long lecturerId, @PathVariable("studentId") Long studentId) {
+        lecturerService.assignStudentToLecturer(lecturerId, studentId);
+    }
+    @DeleteMapping(path = "/{lecturerId}/removeStudent/{studentId}")
+    public void removeLecturerFromStudent(@PathVariable("lecturerId") Long lecturerId, @PathVariable("studentId") Long studentId) {
+        lecturerService.removeStudentFromLecturer(lecturerId, studentId);
+    }
     @DeleteMapping(path = "{lecturerId}")
     public void deleteLecturer(@PathVariable("lecturerId") Long lecturerId) {
         lecturerService.deleteLecturer(lecturerId);
